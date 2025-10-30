@@ -1,9 +1,9 @@
-#FROM rocm/dev-ubuntu-24.04:6.4-complete
-FROM rocm/dev-ubuntu-24.04:7.0.2-complete
+FROM rocm/dev-ubuntu-24.04:6.4.3-complete
+#FROM rocm/dev-ubuntu-24.04:7.0.2-complete
 
 ARG LLAMACPP_ROCM_ARCH gfx1151
 
-RUN apt-get update && apt-get install -y nano libcurl4-openssl-dev cmake git
+RUN apt-get update && apt-get install -y vim libcurl4-openssl-dev cmake git
 RUN mkdir -p /workspace && cd /workspace
 
 #RUN git clone -b amd-integration https://github.com/ROCm/llama.cpp
