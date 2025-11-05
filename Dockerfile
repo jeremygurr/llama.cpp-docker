@@ -1,5 +1,6 @@
-FROM rocm/dev-ubuntu-24.04:6.4.3-complete
+#FROM rocm/dev-ubuntu-24.04:6.4.3-complete
 #FROM rocm/dev-ubuntu-24.04:7.0.2-complete
+FROM rocm/dev-ubuntu-24.04:7.1-complete
 
 ARG LLAMACPP_ROCM_ARCH gfx1151
 
@@ -7,7 +8,8 @@ RUN apt-get update && apt-get install -y vim libcurl4-openssl-dev cmake git
 RUN mkdir -p /workspace && cd /workspace
 
 #RUN git clone -b amd-integration https://github.com/ROCm/llama.cpp
-RUN git clone -b b6888 https://github.com/ggml-org/llama.cpp
+#RUN git clone -b b6888 https://github.com/ggml-org/llama.cpp
+RUN git clone -b b6960 https://github.com/ggml-org/llama.cpp
 
 WORKDIR llama.cpp
 RUN HIPCXX="$(hipconfig -l)/clang" HIP_PATH="$(hipconfig -R)" \
