@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# assumed llama.cpp is checked out to the desired tag at /t/llama.cpp
+
+if [[ "${clean:-}" ]]; then
+  echo "Cleaning..."
+  podman image rm localhost/llama.cpp-cpu:latest
+fi
+
+podman build -v /t/llama.cpp:/workspace/llama.cpp -t llama.cpp-cpu -f Dockerfile-cpu-only
+
