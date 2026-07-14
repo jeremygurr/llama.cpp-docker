@@ -7,7 +7,10 @@ WORKDIR /workspace/llama.cpp
 RUN pip install --upgrade -r requirements.txt --extra-index-url https://download.pytorch.org/cpu --break-system-packages
 
 # because newer version breaks gemma4 for some reason
-RUN pip install transformers==4.45.2 --force-reinstall --break-system-packages
+#RUN pip install transformers==4.45.2 --force-reinstall --break-system-packages
+
+# the standard version has a bug for gemma4
+RUN pip install --upgrade transformers --break-system-packages
 
 # cpu only
 RUN HIPCXX="$(hipconfig -l)/clang" HIP_PATH="$(hipconfig -R)" \
