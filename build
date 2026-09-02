@@ -1,6 +1,8 @@
 #!/bin/bash
 
 clean=${clean:-f}
+llama_cpp_path=/t/llama.cpp
+#llama_cpp_path=/t/ROCmFPX
 if [[ "$1" == clean ]]; then
   clean=t
 fi
@@ -9,10 +11,10 @@ fi
 
 if [[ $clean == t ]]; then
   echo "Cleaning..."
-  podman image rm localhost/llama.cpp-cpu:latest
+  podman image rm localhost/llama.cpp:latest
   podman image prune -f
 fi
 
-#podman build -v /t/llama.cpp:/workspace/llama.cpp -t llama.cpp-cpu -f Dockerfile-cpu-only
-nice sudo /usr/bin/podman build -v /t/llama.cpp:/workspace/llama.cpp -t llama.cpp -f Dockerfile
+#podman build -v $llama_cpp_path:/workspace/llama.cpp -t llama.cpp-cpu -f Dockerfile-cpu-only
+nice sudo /usr/bin/podman build -v $llama_cpp_path:/workspace/llama.cpp -t llama.cpp -f Dockerfile
 

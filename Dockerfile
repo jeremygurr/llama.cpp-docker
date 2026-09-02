@@ -11,12 +11,13 @@ RUN apt-get install -y \
     cmake \
     glslc \
     libvulkan-dev \
+    npm \
     spirv-headers
 
 WORKDIR /workspace/llama.cpp
 
-RUN pip install --upgrade -r requirements.txt --extra-index-url https://download.pytorch.org/cpu --break-system-packages
-RUN pip install --upgrade transformers --break-system-packages
+#RUN pip install --upgrade -r requirements.txt --extra-index-url https://download.pytorch.org/cpu --break-system-packages
+#RUN pip install --upgrade transformers --break-system-packages
 
 #RUN pip show amdsmi
 #RUN pip uninstall amdsmi -y
@@ -24,16 +25,16 @@ RUN pip install --upgrade transformers --break-system-packages
 #RUN python3 -m pip install .
 
 # support rocm
-RUN HIPCXX="$(hipconfig -l)/clang" HIP_PATH="$(hipconfig -R)" \
-  GGML_CUDA_ENABLE_UNIFIED_MEMORY=1 \
-  cmake -S . -B build-rocm -DGGML_HIP=ON -DAMDGPU_TARGETS=$LLAMACPP_ROCM_ARCH \
-  -DCMAKE_BUILD_TYPE=Release -DLLAMA_CURL=ON \
- && cmake --build build-rocm --config Release -j$(nproc)
+#RUN HIPCXX="$(hipconfig -l)/clang" HIP_PATH="$(hipconfig -R)" \
+#  GGML_CUDA_ENABLE_UNIFIED_MEMORY=1 \
+#  cmake -S . -B build-rocm -DGGML_HIP=ON -DGPU_TARGETS=$LLAMACPP_ROCM_ARCH \
+#  -DGGML_NATIVE=ON -DCMAKE_BUILD_TYPE=Release -DLLAMA_CURL=ON \
+# && cmake --build build-rocm --config Release -j$(nproc)
 
 # vulkan build
 RUN HIPCXX="$(hipconfig -l)/clang" HIP_PATH="$(hipconfig -R)" \
   GGML_CUDA_ENABLE_UNIFIED_MEMORY=1 \
-  cmake -S . -B build-vulkan -DGGML_VULKAN=ON -DAMDGPU_TARGETS=$LLAMACPP_ROCM_ARCH \
-  -DCMAKE_BUILD_TYPE=Release -DLLAMA_CURL=ON \
+  cmake -S . -B build-vulkan -DGGML_VULKAN=ON -DGPU_TARGETS=$LLAMACPP_ROCM_ARCH \
+  -DGGML_NATIVE=ON -DCMAKE_BUILD_TYPE=Release -DLLAMA_CURL=ON \
   && cmake --build build-vulkan --config Release -j$(nproc)
 
