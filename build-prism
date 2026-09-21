@@ -1,23 +1,35 @@
 #!/bin/bash
 
-llama_cpp_version=prism-2026-9-21
+llama_cpp_version=prism-2026-9-18
 clean=${clean:-f}
+nocache=${nocache:-f}
 
 # This is expected to be cloned from https://github.com/PrismML-Eng/llama.cpp
 llama_cpp_path=/t/llama.cpp-prism
 
-if [[ "$1" == clean ]]; then
-  clean=t
-fi
+while [[ "${1:-}" ]]; do
+  if [[ "$1" == clean ]]; then
+    clean=t
+  fi
+  if [[ "$1" == nocache ]]; then
+    nocache=t
+  fi
+  shift
+done
+
 
 # assumed llama.cpp is checked out to the desired tag at /t/llama.cpp
 
 extra=
 if [[ $clean == t ]]; then
   echo "Cleaning..."
+  sudo podman image rm localhost/llama.cpp:$llama_cpp_version
+  sudo podman image prune -f
+fi
+
+if [[ $nocache == t ]]; then
+  echo "Not using cache..."
   extra='--no-cache'
-  podman image rm localhost/llama.cpp:latest localhost/llama.cpp:$llama_cpp_version
-  podman image prune -f
 fi
 
 nice sudo /usr/bin/podman build $extra -v $llama_cpp_path:/workspace/llama.cpp -t llama.cpp:$llama_cpp_version -f Dockerfile

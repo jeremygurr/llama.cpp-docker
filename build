@@ -13,8 +13,8 @@ fi
 
 if [[ $clean == t ]]; then
   echo "Cleaning..."
-  podman image rm localhost/llama.cpp:latest
-  podman image prune -f
+  sudo podman image rm localhost/llama.cpp:latest
+  sudo podman image prune -f
 fi
 
 #podman build -v $llama_cpp_path:/workspace/llama.cpp -t llama.cpp-cpu -f Dockerfile-cpu-only
