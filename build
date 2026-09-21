@@ -1,7 +1,9 @@
 #!/bin/bash
 
+llama_cpp_version=v0.4.1
 clean=${clean:-f}
 llama_cpp_path=/t/llama.cpp
+
 #llama_cpp_path=/t/ROCmFPX
 if [[ "$1" == clean ]]; then
   clean=t
@@ -16,5 +18,5 @@ if [[ $clean == t ]]; then
 fi
 
 #podman build -v $llama_cpp_path:/workspace/llama.cpp -t llama.cpp-cpu -f Dockerfile-cpu-only
-nice sudo /usr/bin/podman build -v $llama_cpp_path:/workspace/llama.cpp -t llama.cpp -f Dockerfile
+nice sudo /usr/bin/podman build -v $llama_cpp_path:/workspace/llama.cpp -t llama.cpp:$llama_cpp_version -f Dockerfile
 
